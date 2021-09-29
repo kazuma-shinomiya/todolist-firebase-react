@@ -48,7 +48,7 @@ const Dashboard = () => {
     <div>
       ダッシュボード
       {formRender()}
-      <TodoList todos={todos} />
+      <TodoList todos={todos} fetch={fetch}/>
     </div>
   )
 }
