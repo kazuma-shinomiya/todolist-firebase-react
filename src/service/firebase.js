@@ -1,5 +1,5 @@
 import firebase from "firebase/compat/app";
-import "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider , onAuthStateChanged} from "firebase/auth";
 import "firebase/firestore";
 
 firebase.initializeApp({
@@ -12,3 +12,17 @@ firebase.initializeApp({
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 });
+
+const provider = new GoogleAuthProvider();
+export const auth = getAuth();
+export const signInWithGoogle = () => {
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      console.log(result.user);
+    }).catch((error) => {
+      console.log(error.message);
+    });
+}
+export const checkAuth = (set) => {
+  onAuthStateChanged(auth, set)
+}
