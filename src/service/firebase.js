@@ -1,5 +1,5 @@
 import firebase from "firebase/compat/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider , onAuthStateChanged} from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider , onAuthStateChanged, signOut} from "firebase/auth";
 import "firebase/firestore";
 
 firebase.initializeApp({
@@ -25,4 +25,13 @@ export const signInWithGoogle = () => {
 }
 export const checkAuth = (set) => {
   onAuthStateChanged(auth, set)
+}
+export const logout = () => {
+  signOut(auth)
+  .then(() => {
+    console.log("logout");
+    document.location.reload();
+  }).catch((error) => {
+    console.log(error.message);
+  })
 }
