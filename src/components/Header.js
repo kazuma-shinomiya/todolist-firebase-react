@@ -1,20 +1,43 @@
 import { signInWithGoogle, logout } from "../service/firebase";
 import { AuthContext } from "../providers/AuthProvider";
 import { useContext } from "react";
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+
 
 const Header = () => {
   const currentUser = useContext(AuthContext);
   console.log(currentUser);
 
   const buttonRender = () => {
-    return currentUser ? <button onClick={logout}>ログアウト</button> : <button onClick={signInWithGoogle}>ログイン</button>;
+    return currentUser ? <Button color="inherit" onClick={logout}>ログアウト</Button> : <Button color="inherit" onClick={signInWithGoogle}>ログイン</Button>;
   }
 
   return (
-    <header>
-      ヘッダー
-      {buttonRender()}
-    </header>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            ToDoList
+          </Typography>
+          {buttonRender()}
+        </Toolbar>
+      </AppBar>
+    </Box>
   )
 }
 export default Header;

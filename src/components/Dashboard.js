@@ -3,6 +3,25 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import * as Api from "../service/api";
 import TodoList from "./TodoList";
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/system';
+
+
+const CenterComponent = styled('div')({
+  textAlign: 'center',
+  marginTop: 40,
+});
+
+const CustomForm = styled('form')({
+  width: '100%',
+  maxWidth: 360,
+  margin: 'auto',
+  marginBottom: 40,
+  display: 'flex',
+  alignItems: 'baseline',
+  justifyContent: 'center',
+});
 
 const Dashboard = () => {
   const currentUser = useContext(AuthContext);
@@ -23,12 +42,15 @@ const Dashboard = () => {
   const formRender = () => {
     let dom;
     if (currentUser) {
-      dom = <form>
-        <input placeholder="ToDoName" value={inputName} onChange={handleChange}/>
-        <button type="button" onClick={() => post()}>追加</button>
-      </form>
+      dom = <CustomForm>
+        <TextField sx={{ mr: 2}} variant="standard" placeholder="ToDoName" value={inputName} onChange={handleChange}/>
+        <Button variant="contained" size="small" 
+          disabled={inputName.length > 0 ? false : true}
+          type="button" onClick={() => post()}>追加
+        </Button>
+      </CustomForm>
     } else {
-      dom = <button onClick={signInWithGoogle}>ログイン</button>
+      dom = <Button onClick={signInWithGoogle}>ログイン</Button>
     }
     
     return dom;
@@ -45,11 +67,10 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
-      ダッシュボード
+    <CenterComponent>
       {formRender()}
       <TodoList todos={todos} fetch={fetch}/>
-    </div>
+    </CenterComponent>
   )
 }
 export default Dashboard;

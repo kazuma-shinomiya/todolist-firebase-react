@@ -1,5 +1,5 @@
 import firebase from "firebase/compat";
-import { getFirestore, collection, query, where, orderBy, getDocs, addDoc, doc, deleteDoc} from "firebase/firestore";
+import { getFirestore, collection, query, where, orderBy, getDoc, getDocs, addDoc, doc, updateDoc, deleteDoc} from "firebase/firestore";
 
 const db = getFirestore();
 
@@ -17,13 +17,20 @@ export const initGet = async(uid) => {
   return todos;
 }
 
-
 export const addTodo = (content, uid) => {
   addDoc(collection(db, "todo"), {
     content: content,
     uid: uid,
     isComplete: false,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+}
+
+export const toggleComplete = async(id) => {
+  const todo = await doc(db, "todo", id);
+  const todoSnap = await getDoc(todo);
+  await updateDoc(todo, {
+    isComplete: !todoSnap.data().isComplete,
   });
 }
 
