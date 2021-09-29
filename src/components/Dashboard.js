@@ -1,11 +1,24 @@
 import { signInWithGoogle } from "../service/firebase";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import * as Api from "../service/api";
+import TodoList from "./TodoList";
 
 const Dashboard = () => {
   const currentUser = useContext(AuthContext);
   const [inputName, setInputName] = useState("");
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    fetch();
+  }, [currentUser])
+
+  const fetch = async() => {
+    if (currentUser) {
+      const data = await Api.initGet(currentUser.uid);
+      await setTodos(data);
+    }
+  }
 
   const formRender = () => {
     let dom;
@@ -25,15 +38,17 @@ const Dashboard = () => {
     setInputName(event.currentTarget.value);
   }
 
-  const post = () => {
-    Api.addTodo(inputName, currentUser.uid);
-    setInputName("");
+  const post = async() => {
+    await Api.addTodo(inputName, currentUser.uid);
+    await setInputName("");
+    fetch();
   }
 
   return (
     <div>
       ダッシュボード
       {formRender()}
+      <TodoList todos={todos} />
     </div>
   )
 }
